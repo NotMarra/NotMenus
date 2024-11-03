@@ -1,0 +1,16 @@
+title: 'Test Menu'
+open_command: 'menu'
+permission: 'testmenu.use'
+pattern:
+  - "#########"
+  - "#       #"
+  - "#       #"
+  - "#       #"
+  - "#       #"
+  - "#########"
+items:
+  "#":
+    material: "BLACK_STAINED_GLASS_PANE"
+    amount: 1
+    name: " "
+    lore: []
