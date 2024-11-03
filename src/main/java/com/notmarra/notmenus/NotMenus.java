@@ -5,7 +5,6 @@ import com.notmarra.notmenus.utils.MenuManager;
 import de.tr7zw.changeme.nbtapi.NBT;
 import me.zort.containr.Containr;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -20,7 +19,6 @@ public final class NotMenus extends JavaPlugin {
         this.config.options().copyDefaults(true);
         this.saveDefaultConfig();
         Containr.init(this);
-        MenuManager menuManager = new MenuManager(this);
 
         if (!NBT.preloadApi()) {
             getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
@@ -29,16 +27,10 @@ public final class NotMenus extends JavaPlugin {
         }
 
         Files.createFile("menus/testmenu.yml");
-        getCommand("menu").setExecutor((sender, command, label, args) -> {
-            if (sender instanceof Player player) {
-                menuManager.openMenu(player, "testmenu");
+        MenuManager menuManager = new MenuManager(this);
 
-                player.sendMessage("You opened the GUI!");
-
-            }
-            return true;
-        });
-
+        getLogger().info("Setuping commands!");
+        menuManager.registerCommands();
 
 
         getLogger().info("NotMenus has been enabled!");

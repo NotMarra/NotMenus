@@ -1,6 +1,11 @@
 title: 'Test Menu'
-open_command: 'menu'
+command: 'menu'
+description: 'This is a test menu.'
 permission: 'testmenu.use'
+permission_message: 'You do not have permission to use this menu. HAHAHA'
+aliases:
+  - 'testmenu'
+  - 'tm'
 pattern:
   - "#########"
   - "#       #"

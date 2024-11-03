@@ -5,7 +5,3 @@ api-version: '1.20'
 authors: [NotMarra]
 description: Minecraft menus plugin
 website: notmarra.com
-commands:
-  menu:
-    description: Opens the GUI
-    usage: /<command>

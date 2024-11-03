@@ -1,5 +1,6 @@
 package com.notmarra.notmenus.utils;
 import com.notmarra.notmenus.NotMenus;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +37,23 @@ public class MenuManager {
             menu.open(player);
         } else {
             player.sendMessage("Menu " + menuName + " not found.");
+        }
+    }
+
+    public void registerCommands() {
+        for (String menu : menus.keySet()) {
+            if (NotMenus.getInstance().getConfig().getBoolean("debug")) {
+                plugin.getLogger().info("Registering command for " + menu);
+            }
+            CommandUtil.registerCommands(new CCommand(menus.get(menu).getCommand(), menus.get(menu).getDescription(), menus.get(menu).getPermission(), menus.get(menu).getPermissionMessage(), menus.get(menu).getAliases()) {
+                @Override
+                public void run(CommandSender sender, String commandLabel, String[] arguments) {
+                    if (sender instanceof Player player) {
+                        openMenu(player, menu);
+                        player.sendMessage("You opened the " + menu + " GUI!");
+                    }
+                }
+            });
         }
     }
 

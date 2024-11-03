@@ -12,7 +12,8 @@ public class Files {
     public static void createFile(String name) {
         File file = new File(NotMenus.getInstance().getDataFolder().getAbsolutePath(), name);
         if (!file.exists()) {
-            NotMenus.getInstance().saveResource(name, !file.getParentFile().mkdirs());
+            file.getParentFile().mkdirs();
+            NotMenus.getInstance().saveResource(name, false);
         }
 
         try {
