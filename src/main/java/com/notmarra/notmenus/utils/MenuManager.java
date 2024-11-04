@@ -45,10 +45,14 @@ public class MenuManager {
             if (NotMenus.getInstance().getConfig().getBoolean("debug")) {
                 plugin.getLogger().info("Registering command for " + menu);
             }
-            CommandUtil.registerCommands(new CCommand(menus.get(menu).getCommand(), menus.get(menu).getDescription(), menus.get(menu).getPermission(), menus.get(menu).getPermissionMessage(), menus.get(menu).getAliases()) {
+            CommandUtil.registerCommands(new CCommand(menus.get(menu).getCommand(), menus.get(menu).getDescription(), menus.get(menu).getAliases()) {
                 @Override
                 public void run(CommandSender sender, String commandLabel, String[] arguments) {
                     if (sender instanceof Player player) {
+                        if (menus.get(menu).getPermission() != null && !player.hasPermission(menus.get(menu).getPermission())) {
+                            player.sendMessage(menus.get(menu).getPermissionMessage());
+                            return;
+                        }
                         openMenu(player, menu);
                         player.sendMessage("You opened the " + menu + " GUI!");
                     }

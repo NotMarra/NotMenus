@@ -9,7 +9,7 @@ aliases:
 pattern:
   - "#########"
   - "#       #"
-  - "#       #"
+  - "#   &   #"
   - "#       #"
   - "#       #"
   - "#########"
@@ -19,3 +19,24 @@ items:
     amount: 1
     name: " "
     lore: []
+  "&":
+    material: "DIAMOND"
+    amount: 1
+    name: "&bDiamond"
+    lore:
+      - "&7This is a diamond."
+      - "&7It is very shiny."
+      - ""
+      - "&7Right click to get a diamond."
+    click_events:
+      left_click:
+        commands:
+          - "say Left click performed!"
+        messages:
+          - "&aYou left-clicked on the diamond."
+      right_click:
+        commands:
+          - "give %player% diamond 1"
+          - "[close]"
+        messages:
+          - "&aYou have been given a diamond."

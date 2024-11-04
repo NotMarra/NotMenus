@@ -3,7 +3,6 @@ package com.notmarra.notmenus.utils;
 import me.zort.containr.Component;
 import me.zort.containr.GUI;
 import me.zort.containr.internal.util.ItemBuilder;
-import org.apache.commons.lang3.ObjectUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -43,7 +42,16 @@ public class MenuGUI {
             String name = config.getString("items." + key + ".name", "");
             int amount = config.getInt("items." + key + ".amount", 1);
             List<String> lore = config.getStringList("items." + key + ".lore");
-            items.put(key.charAt(0), new MenuItem(material, name, amount, lore));
+            Map<String, List<String>> clickEvents = new HashMap<>();
+            if (config.contains("items." + key + ".click_events")) {
+                for (String eventType : config.getConfigurationSection("items." + key + ".click_events").getKeys(false)) {
+                    List<String> commands = config.getStringList("items." + key + ".click_events." + eventType + ".commands");
+                    List<String> messages = config.getStringList("items." + key + ".click_events." + eventType + ".messages");
+                    clickEvents.put(eventType + "_commands", commands);
+                    clickEvents.put(eventType + "_messages", messages);
+                }
+            }
+            items.put(key.charAt(0), new MenuItem(material, name, amount, lore, clickEvents));
         }
     }
 
@@ -62,13 +70,41 @@ public class MenuGUI {
                                 gui.setElement(row * 9 + col, Component.element()
                                         .click(info -> {
                                             Player whoClicked = info.getPlayer();
-                                            whoClicked.sendMessage("Clicked on " + menuItem.getName());
+                                            if (info.getClickType().isLeftClick()) {
+                                                List<String> commands = menuItem.clickEvents().get("left_click_commands");
+                                                for (String command : commands) {
+                                                    if (command.contains("[close]")) {
+                                                        whoClicked.closeInventory();
+                                                    } else {
+                                                        whoClicked.performCommand(command.replace("%player%", whoClicked.getName()));
+                                                    }
+                                                }
+
+                                                List<String> messages = menuItem.clickEvents().get("left_click_messages");
+                                                for (String message : messages) {
+                                                    whoClicked.sendMessage(message);
+                                                }
+                                            } else if (info.getClickType().isRightClick()) {
+                                                List<String> commands = menuItem.clickEvents().get("right_click_commands");
+                                                for (String command : commands) {
+                                                    if (command.contains("[close]")) {
+                                                        whoClicked.closeInventory();
+                                                    } else {
+                                                        whoClicked.performCommand(command.replace("%player%", whoClicked.getName()));
+                                                    }
+                                                }
+
+                                                List<String> messages = menuItem.clickEvents().get("right_click_messages");
+                                                for (String message : messages) {
+                                                    whoClicked.sendMessage(message);
+                                                }
+                                            }
                                         })
                                         .item(new ItemBuilder()
-                                                .withType(menuItem.getMaterial())
-                                                .withAmount(menuItem.getAmount())
-                                                .withName(menuItem.getName())
-                                                .withLore(menuItem.getLore())
+                                                .withType(menuItem.material())
+                                                .withAmount(menuItem.amount())
+                                                .withName(menuItem.name())
+                                                .withLore(menuItem.lore())
                                                 .build())
                                         .build());
                             }
@@ -99,34 +135,8 @@ public class MenuGUI {
         return aliases;
     }
 
-    private static class MenuItem {
-        private final Material material;
-        private final int amount;
-        private final String name;
-        private final List<String> lore;
-
-        public MenuItem(Material material, String name, int amount, List<String> lore) {
-            this.material = material;
-            this.amount = amount;
-            this.name = name;
-            this.lore = lore;
-        }
-
-        public Material getMaterial() {
-            return material;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<String> getLore() {
-            return lore;
-        }
+    private record MenuItem(Material material, String name, int amount, List<String> lore,
+                            Map<String, List<String>> clickEvents) {
     }
 }
 
