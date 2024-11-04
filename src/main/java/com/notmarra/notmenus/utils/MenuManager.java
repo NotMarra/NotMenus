@@ -28,6 +28,9 @@ public class MenuManager {
             File file = new File(NotMenus.getInstance().getDataFolder(), "menus/" + menu);
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             this.menus.put(menu.replace(".yml", ""), new MenuGUI(config));
+            if (NotMenus.getInstance().getConfig().getBoolean("debug")) {
+                plugin.getLogger().info("Loaded menu " + menu);
+            }
         }
     }
 
@@ -54,7 +57,6 @@ public class MenuManager {
                             return;
                         }
                         openMenu(player, menu);
-                        player.sendMessage("You opened the " + menu + " GUI!");
                     }
                 }
             });

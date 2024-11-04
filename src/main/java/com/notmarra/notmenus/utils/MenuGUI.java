@@ -72,32 +72,12 @@ public class MenuGUI {
                                             Player whoClicked = info.getPlayer();
                                             if (info.getClickType().isLeftClick()) {
                                                 List<String> commands = menuItem.clickEvents().get("left_click_commands");
-                                                for (String command : commands) {
-                                                    if (command.contains("[close]")) {
-                                                        whoClicked.closeInventory();
-                                                    } else {
-                                                        whoClicked.performCommand(command.replace("%player%", whoClicked.getName()));
-                                                    }
-                                                }
-
                                                 List<String> messages = menuItem.clickEvents().get("left_click_messages");
-                                                for (String message : messages) {
-                                                    whoClicked.sendMessage(message);
-                                                }
+                                                ClickEvents.clickEvent(commands, messages, whoClicked);
                                             } else if (info.getClickType().isRightClick()) {
                                                 List<String> commands = menuItem.clickEvents().get("right_click_commands");
-                                                for (String command : commands) {
-                                                    if (command.contains("[close]")) {
-                                                        whoClicked.closeInventory();
-                                                    } else {
-                                                        whoClicked.performCommand(command.replace("%player%", whoClicked.getName()));
-                                                    }
-                                                }
-
                                                 List<String> messages = menuItem.clickEvents().get("right_click_messages");
-                                                for (String message : messages) {
-                                                    whoClicked.sendMessage(message);
-                                                }
+                                                ClickEvents.clickEvent(commands, messages, whoClicked);
                                             }
                                         })
                                         .item(new ItemBuilder()
