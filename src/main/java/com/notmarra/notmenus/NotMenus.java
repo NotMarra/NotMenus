@@ -1,13 +1,8 @@
 package com.notmarra.notmenus;
 
-import com.notmarra.notmenus.cmds.Reload;
-import com.notmarra.notmenus.utils.CCommand;
-import com.notmarra.notmenus.utils.CommandUtil;
-import com.notmarra.notmenus.utils.Files;
-import com.notmarra.notmenus.utils.MenuManager;
+import com.notmarra.notmenus.utils.*;
 import de.tr7zw.changeme.nbtapi.NBT;
 import me.zort.containr.Containr;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +19,8 @@ public final class NotMenus extends JavaPlugin {
         this.config.options().copyDefaults(true);
         this.saveDefaultConfig();
         Containr.init(this);
+        menuManager = new MenuManager(this);
+
 
         if (!NBT.preloadApi()) {
             getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
@@ -32,18 +29,15 @@ public final class NotMenus extends JavaPlugin {
         }
 
         Files.createFile("menus/testmenu.yml");
-        menuManager = new MenuManager(this);
+        menuManager.loadMenus();
 
         getLogger().info("Registering commands!");
         menuManager.registerCommands();
 
-        CommandUtil.registerCommands(new CCommand("reload", "Reload the plugin") {
-            @Override
-            public void run(CommandSender sender, String commandLabel, String[] arguments) {
-                Reload.execute(sender);
-            }
-        });
-
+        this.getCommand("notmenus").setExecutor(new CommandCreator());
+        this.getCommand("nm").setExecutor(new CommandCreator());
+        this.getCommand("notmenus").setTabCompleter(new TabCompletion());
+        this.getCommand("nm").setTabCompleter(new TabCompletion());
 
         getLogger().info("NotMenus has been enabled!");
     }
@@ -66,5 +60,9 @@ public final class NotMenus extends JavaPlugin {
             menuManager = new MenuManager(this);
         }
         this.getLogger().info("Plugin reloaded successfully!");
+    }
+
+    public MenuManager getMenuManager() {
+        return menuManager;
     }
 }

@@ -2,3 +2,13 @@
 #    By NotMarra
 
 debug: true
+
+help:
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"
+  - ""
+  - "<#0077ff><bold>/notmenus reload</bold></#0077ff><gray> - Reload the plugin."
+  - "<#0077ff><bold>/notmenus help</bold></#0077ff><gray> - Show this help message."
+  - "<#0077ff><bold>/notmenus list</bold></#0077ff><gray> - List all menus."
+  - "<#0077ff><bold>/notmenus open <menu></bold></#0077ff><gray> - Open a menu."
+  - ""
+  - "<dark_gray><st>-----------------------------------------------</st></dark_gray>"

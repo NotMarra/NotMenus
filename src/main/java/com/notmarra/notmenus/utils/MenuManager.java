@@ -17,10 +17,9 @@ public class MenuManager {
 
     public MenuManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        loadMenus();
     }
 
-    private void loadMenus() {
+    public void loadMenus() {
         String[] menus = filesInstance.getFileNamesFromDirectory("menus");
 
         for (String menu : menus) {
@@ -63,10 +62,8 @@ public class MenuManager {
         }
     }
 
-    public void getMenus() {
-        for (String menu : menus.keySet()) {
-            plugin.getLogger().info(menu);
-        }
+    public Map<String, MenuGUI> getMenus() {
+        return menus;
     }
 
     public void reloadMenus() {

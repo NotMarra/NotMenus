@@ -5,3 +5,8 @@ api-version: '1.20'
 authors: [NotMarra]
 description: Minecraft menus plugin
 website: notmarra.com
+commands:
+  notmenus:
+    description: Main command for NotMenus
+    usage: /notmenus <reload|help|list|open>
+    aliases: [nm]
