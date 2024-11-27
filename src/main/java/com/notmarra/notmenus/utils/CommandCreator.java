@@ -1,6 +1,7 @@
 package com.notmarra.notmenus.utils;
 
 import com.notmarra.notmenus.cmds.Help;
+import com.notmarra.notmenus.cmds.List;
 import com.notmarra.notmenus.cmds.Reload;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +22,7 @@ public class CommandCreator implements CommandExecutor {
                     Reload.execute(sender);
                     break;
                 case "list":
-                    // List.execute(sender);
+                    List.execute(sender);
                     break;
                 default:
                     Help.execute(sender);

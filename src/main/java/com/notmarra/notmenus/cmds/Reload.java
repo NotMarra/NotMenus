@@ -9,6 +9,7 @@ public class Reload {
         if (sender instanceof Player p) {
             if (p.hasPermission("notcredits.reload")) {
                 NotMenus.getInstance().reload();
+                p.sendMessage("NotMenus has been reloaded.");
             } else {
                 p.sendMessage("You do not have permission to use this command.");
             }

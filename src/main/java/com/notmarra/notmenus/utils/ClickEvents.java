@@ -8,19 +8,26 @@ import java.util.List;
 public class ClickEvents {
     public static void clickEvent(List<String> commands, List<String> messages, Player player) {
         if (commands != null) {
+            String rawCMD;
             for (String command : commands) {
-                if (command.contains("[close]")) {
-                    player.closeInventory();
-                } else if (command.contains("[player]")) {
-                    String rawCMD = command.replace("[player] ", "");
-                    player.performCommand(rawCMD.replace("%player%", player.getName()));
-                } else if (command.contains("[console]")) {
-                    String rawCMD = command.replace("[console] ", "");
-                    NotMenus.getInstance().getServer().dispatchCommand(NotMenus.getInstance().getServer().getConsoleSender(), rawCMD.replace("%player%", player.getName()));
-                } else if (command.contains("[refresh]")) {
-                    player.updateInventory();
-                } else {
-                    player.performCommand(command);
+                switch (command) {
+                    case "[close]":
+                        player.closeInventory();
+                        break;
+                    case "[player]":
+                        rawCMD = command.replace("[player] ", "");
+                        player.performCommand(rawCMD.replace("%player%", player.getName()));
+                        break;
+                    case "[console]":
+                        rawCMD = command.replace("[console] ", "");
+                        NotMenus.getInstance().getServer().dispatchCommand(NotMenus.getInstance().getServer().getConsoleSender(), rawCMD.replace("%player%", player.getName()));
+                        break;
+                    case "[refresh]":
+                        player.updateInventory();
+                        break;
+                    default:
+                        NotMenus.getInstance().getLogger().severe("Invalid menu command: " + command);
+                        break;
                 }
             }
         } else if (messages != null) {

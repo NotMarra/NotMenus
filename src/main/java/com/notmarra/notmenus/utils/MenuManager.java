@@ -22,15 +22,24 @@ public class MenuManager {
     public void loadMenus() {
         String[] menus = filesInstance.getFileNamesFromDirectory("menus");
 
+        long startTime = System.currentTimeMillis();
         for (String menu : menus) {
             plugin.getLogger().info("Loading menu " + menu);
             File file = new File(NotMenus.getInstance().getDataFolder(), "menus/" + menu);
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            this.menus.put(menu.replace(".yml", ""), new MenuGUI(config));
+
+            long menuStartTime = System.currentTimeMillis();
+            MenuGUI menuGUI = new MenuGUI(config);
+            long menuLoadTime = System.currentTimeMillis() - menuStartTime;
+
+            this.menus.put(menu.replace(".yml", ""), menuGUI);
+
             if (NotMenus.getInstance().getConfig().getBoolean("debug")) {
-                plugin.getLogger().info("Loaded menu " + menu);
+                plugin.getLogger().info("Loaded menu " + menu + " in " + menuLoadTime + " ms");
             }
         }
+        long totalLoadTime = System.currentTimeMillis() - startTime;
+        plugin.getLogger().info("Total menu loading time: " + totalLoadTime + " ms");
     }
 
     public void openMenu(Player player, String menuName) {

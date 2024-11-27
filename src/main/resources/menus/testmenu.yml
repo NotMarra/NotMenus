@@ -36,7 +36,7 @@ items:
           - "&aYou left-clicked on the diamond."
       right_click:
         commands:
-          - "give %player% diamond 1"
+          - "[console] give %player% diamond 1"
           - "[close]"
         messages:
           - "&aYou have been given a diamond."
